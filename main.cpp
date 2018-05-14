@@ -9,19 +9,19 @@ typedef unsigned char BYTE;
 typedef unsigned short WORD;
 typedef unsigned int UINT;
 
+//write 2byte binary data to a file
 void writeWord(ofstream *, WORD);
 
 int main(){
 
+	//open file test.mid
     ofstream ofile("test.mid", ios::binary | ios::out);
 
-    //
+    //error check
     if(!ofile){
-    	cout << "Failed to load file" << endl;
+    	cout << "Failed to open file" << endl;
     	return 1;
     }
-
-    //data = 0xE00101000100060000006468544d; //MThd
 
     //--------------------header chunk--------------------
 
@@ -39,12 +39,12 @@ int main(){
     //number of tracks
     writeWord(&ofile, 0x0001);
 
-    //division 2B 0x03c0...960
+    //division 0x03c0...960 (it should be multiples of 96
     writeWord(&ofile, 0x03c0);
 
     //--------------------track chunk--------------------
 
-    //chunk type "MTrk" 
+    //chunk type "MTrk"
     writeWord(&ofile, 0x4d54);
     writeWord(&ofile, 0x726b);
 
@@ -61,14 +61,14 @@ int main(){
     writeWord(&ofile, 0x8n00);
 
     ofile.close();
+
 }
 
 void writeWord(ofstream *ofile, WORD datal){
+
 	WORD datab;
 
-	//datal = 0x4d54;
-
-    //リトルエンディアンからビッグエンディアン
+    //covert little endian to big endian
     datab = datal << 8;
     datab |= datal >> 8;
 
@@ -76,6 +76,7 @@ void writeWord(ofstream *ofile, WORD datal){
     cout << datal << " " << endl;
     #endif
 
+    //write data
     ofile->write((char *) &datab, sizeof(datab));
 
 	return;
