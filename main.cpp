@@ -1,28 +1,29 @@
-#include<iostream>
-#include<fstream>
 
-#define DEBUG
-
-using namespace std;
-
-typedef unsigned char BYTE;
-typedef unsigned short WORD;
-typedef unsigned int UINT;
+#include "main.hpp"
 
 //write 2byte binary data to a file
 void writeWord(ofstream *, WORD);
 
 int main(){
 
-	//open file test.mid
-    ofstream ofile("test.mid", ios::binary | ios::out);
+    midiFile file("test.mid");
 
-    //error check
-    if(!ofile){
-    	cout << "Failed to open file" << endl;
-    	return 1;
-    }
+    file.write1Byte(0x4d);
+    file.write1Byte(0x54);
+    file.write1Byte(0x68);
+    file.write1Byte(0x64);
 
+    /*
+    BYTE data = 0x4d;
+    ofile.write((char *) &data, sizeof(data));
+    data = 0x54;
+    ofile.write((char *) &data, sizeof(data));
+    data = 0x68;
+    ofile.write((char *) &data, sizeof(data));
+    data = 0x64;
+    ofile.write((char *) &data, sizeof(data));
+    */
+/*
     //--------------------header chunk--------------------
 
     //chunk type "MThd"
@@ -54,16 +55,31 @@ int main(){
 
     //----------body----------
 
+   	
+		delta time
+		event
+		.
+		.
+		.
+		delta time
+		event
+   	
+
     //delta time
     writeWord(&ofile, 0x03c0);
 
-    //event
+    //meta event
     writeWord(&ofile, 0x8n00);
-
-    ofile.close();
+*/
 
 }
+/*
+void writeBytes(){
+	BYTE byte;
 
+	byte &= char[]
+}
+*/
 void writeWord(ofstream *ofile, WORD datal){
 
 	WORD datab;
