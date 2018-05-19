@@ -9,7 +9,7 @@
 
 typedef unsigned char BYTE;
 typedef unsigned short WORD;
-typedef unsigned int UINT;
+typedef unsigned long LONG;
 
 using namespace std;
 

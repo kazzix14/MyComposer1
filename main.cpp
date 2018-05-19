@@ -6,56 +6,36 @@ void writeWord(ofstream *, WORD);
 
 int main(){
 
+	//--------------------header chunk--------------------
+
     midiFile file("test.mid");
 
-    file.write1Byte(0x4d);
-    file.write1Byte(0x54);
-    file.write1Byte(0x68);
-    file.write1Byte(0x64);
-
-    /*
-    BYTE data = 0x4d;
-    ofile.write((char *) &data, sizeof(data));
-    data = 0x54;
-    ofile.write((char *) &data, sizeof(data));
-    data = 0x68;
-    ofile.write((char *) &data, sizeof(data));
-    data = 0x64;
-    ofile.write((char *) &data, sizeof(data));
-    */
-/*
-    //--------------------header chunk--------------------
-
     //chunk type "MThd"
-    writeWord(&ofile, 0x4d54);
-    writeWord(&ofile, 0x6864);
+    file.writeLong("MThd");
 
-    //length
-    writeWord(&ofile, 0x0000);
-    writeWord(&ofile, 0x0006);
+     //length
+    file.writeLong(6);
 
-    //format "01" (multi track)
-    writeWord(&ofile, 0x0001);
+    //format 1...multi track
+    file.writeWord(1);
 
     //number of tracks
-    writeWord(&ofile, 0x0001);
+    file.writeWord(1);
 
-    //division 0x03c0...960 (it should be multiples of 96
-    writeWord(&ofile, 0x03c0);
+    //division (this should be multiples of 96
+    file.writeWord(960);
 
     //--------------------track chunk--------------------
 
     //chunk type "MTrk"
-    writeWord(&ofile, 0x4d54);
-    writeWord(&ofile, 0x726b);
+    file.writeLong("MTrk");
 
     //length
-    writeWord(&ofile, 0x0000);/////////////////////////////////////
-    writeWord(&ofile, 0x0000);
+    file.writeLong((LONG)0);
 
     //----------body----------
 
-   	
+   	/*
 		delta time
 		event
 		.
@@ -63,37 +43,11 @@ int main(){
 		.
 		delta time
 		event
-   	
+   	*/
 
-    //delta time
-    writeWord(&ofile, 0x03c0);
+    file.writeWord((WORD)0);
+    file.setTempo(120);
+    file.writeWord((WORD)0);
+    file.setTimeSignature(4, 2, 24, 8);
 
-    //meta event
-    writeWord(&ofile, 0x8n00);
-*/
-
-}
-/*
-void writeBytes(){
-	BYTE byte;
-
-	byte &= char[]
-}
-*/
-void writeWord(ofstream *ofile, WORD datal){
-
-	WORD datab;
-
-    //covert little endian to big endian
-    datab = datal << 8;
-    datab |= datal >> 8;
-
-    #ifdef DEBUG
-    cout << datal << " " << endl;
-    #endif
-
-    //write data
-    ofile->write((char *) &datab, sizeof(datab));
-
-	return;
 }
