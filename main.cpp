@@ -11,43 +11,47 @@ int main(){
     midiFile file("test.mid");
 
     //chunk type "MThd"
-    file.writeLong("MThd");
+    file.write("MThd");
 
      //length
-    file.writeLong(6);
+    file.write(6, 4);
 
     //format 1...multi track
-    file.writeWord(1);
+    file.write(1, 2);
 
     //number of tracks
-    file.writeWord(1);
+    file.write(2, 2);
 
     //division (this should be multiples of 96
-    file.writeWord(960);
+    file.write(960, 2);
 
     //--------------------track chunk--------------------
 
-    //chunk type "MTrk"
-    file.writeLong("MTrk");
+    file.setBeginOfTrack();
 
-    //length
-    file.writeLong((LONG)0);
+    file.setDeltaTime(0);
+    file.setTrackName("midi_export");
 
-    //----------body----------
-
-   	/*
-		delta time
-		event
-		.
-		.
-		.
-		delta time
-		event
-   	*/
-
-    file.writeWord((WORD)0);
-    file.setTempo(120);
-    file.writeWord((WORD)0);
+    file.setDeltaTime(0);
     file.setTimeSignature(4, 2, 24, 8);
+
+    file.setDeltaTime(0);
+    file.setTempo(120);
+
+    file.setEndOfTrack();
+
+
+
+    file.setBeginOfTrack();
+
+    file.setDeltaTime(0);
+    file.setTrackName("unko");
+
+    file.setDeltaTime(960);
+    file.noteOn(0, 36, 100);
+    file.setDeltaTime(960);
+    file.noteOff(0, 36, 00);
+
+    file.setEndOfTrack();
 
 }
